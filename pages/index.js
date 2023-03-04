@@ -5,7 +5,10 @@ import styles from '@/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+function Home({ courses }) {
+
+  console.log(courses)
+
   return (
     <>
       <Head>
@@ -121,3 +124,23 @@ export default function Home() {
     </>
   )
 }
+
+export async function getServerSideProps(){
+  try{
+    const response = await axios.get('/api/courses');
+    const data = await response.data
+    return {
+      props: {
+        courses: data
+      }
+    }
+  }catch(error){
+    return {
+      props: {
+        courses: error
+      }
+    }
+  }
+}
+
+export default Home
